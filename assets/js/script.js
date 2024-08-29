@@ -217,3 +217,112 @@ window.onclick = function(event) {
   });
 }
 
+document.getElementById('skills-nav').addEventListener('click', function () {
+  // Simulate clicking on the Resume tab to activate it
+  const resumeTab = document.querySelector('[data-page="resume"]');
+  const allTabs = document.querySelectorAll('article[data-page]');
+
+  // Deactivate all other tabs
+  allTabs.forEach(tab => tab.classList.remove('active'));
+
+  // Activate the Resume tab
+  resumeTab.classList.add('active');
+
+  // Scroll to the Skills section
+  document.getElementById('skills').scrollIntoView({ behavior: 'smooth' });
+});
+
+document.getElementById('contact-form').addEventListener('submit', function(event) {
+  event.preventDefault(); // Prevent the form from reloading the page
+
+  // Get the form values
+  const fullname = document.querySelector('input[name="fullname"]').value;
+  const email = document.querySelector('input[name="email"]').value;
+  const message = document.querySelector('textarea[name="message"]').value;
+
+  // Define the parameters to send to EmailJS
+  const params = {
+    from_name: fullname,
+    from_email: email,
+    message: message
+  };
+
+  // Send the email using EmailJS
+  emailjs.send("service_3ifpe5w","template_d1asnpp", params)
+    .then(function(response) {
+      console.log('SUCCESS!', response.status, response.text);
+      alert('Message sent successfully!');
+    }, function(error) {
+      console.log('FAILED...', error);
+      alert('Failed to send message. Please try again later.');
+    });
+});
+
+async function fetchRecentPosts() {
+  const query = `
+    {
+      user(username: "Saigoutham") {
+        publication {
+          posts(page: 0) {
+            title
+            brief
+            coverImage
+            slug
+            dateAdded
+          }
+        }
+      }
+    }
+  `;
+
+  try {
+      const response = await fetch('https://api.hashnode.com/', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+              query: query,
+          }),
+      });
+
+      const result = await response.json();
+      return result.data.user.publication.posts.slice(0, 3); // Get the top 3 posts
+  } catch (error) {
+      console.error("Error fetching posts:", error);
+      return [];
+  }
+}
+
+function renderPosts(posts) {
+  const blogPostsList = document.querySelector('.blog-posts-list');
+
+  posts.forEach(post => {
+      const blogPostItem = document.createElement('li');
+      blogPostItem.classList.add('blog-post-item');
+
+      blogPostItem.innerHTML = `
+      <a href="https://gouthamcodes.hashnode.dev/${post.slug}">
+        <figure class="blog-banner-box">
+          <img src="${post.coverImage}" alt="${post.title}" loading="lazy">
+        </figure>
+        <div class="blog-content">
+          <div class="blog-meta">
+            <time datetime="${post.dateAdded}">${new Date(post.dateAdded).toDateString()}</time>
+          </div>
+          <h3 class="h3 blog-item-title">${post.title}</h3>
+          <p class="blog-text">${post.brief}</p>
+        </div>
+      </a>
+    `;
+
+      blogPostsList.appendChild(blogPostItem);
+  });
+}
+
+async function loadRecentPosts() {
+  const posts = await fetchRecentPosts();
+  renderPosts(posts);
+}
+
+document.addEventListener('DOMContentLoaded', loadRecentPosts);

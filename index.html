@@ -23,6 +23,19 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
+</script>
+<script type="text/javascript">
+   (function(){
+      emailjs.init({
+        publicKey: "xS4UuMk3jtOUtFP9-",
+      });
+   })();
+</script>
+
+
 </head>
 
 <body>
@@ -74,7 +87,7 @@
             <div class="contact-info">
               <p class="contact-title">Email</p>
 
-              <a href="mailto:richard@example.com" class="contact-link">hiitsmegoutham@gmail.com</a>
+              <a href="mailto:goutham@example.com" class="contact-link">hiitsmegoutham@gmail.com</a>
             </div>
 
           </li>
@@ -171,6 +184,10 @@
 
           <li class="navbar-item">
             <button class="navbar-link  " data-nav-link>About</button>
+          </li>
+          
+          <li class="navbar-item">
+            <button class="navbar-link" id="skills-nav">Skills</button>
           </li>
 
           <li class="navbar-item">
@@ -809,7 +826,7 @@
       </ol>
       </section>
       
-      <section class="skill">
+      <section id="skills" class="skill">
         <h3 class="h3 skills-title">My Skills</h3>
         <ul class="skills-list content-card">
           <li class="skills-item">
@@ -1208,7 +1225,7 @@
 
           <ul class="blog-posts-list">
 
-            <li class="blog-post-item">
+            <!-- <li class="blog-post-item">
               <a href="#">
 
                 <figure class="blog-banner-box">
@@ -1374,7 +1391,7 @@
                 </div>
 
               </a>
-            </li>
+            </li> -->
 
           </ul>
 
@@ -1382,7 +1399,7 @@
 
       </article>
 
-
+      <script src="script.js"></script>
 
 
 
@@ -1408,7 +1425,7 @@
 
           <h3 class="h3 form-title">Contact Form</h3>
 
-          <form action="#" class="form" data-form>
+          <form id="contact-form" class="form" data-form>
 
             <div class="input-wrapper">
               <input type="text" name="fullname" class="form-input" placeholder="Full name" required data-form-input>
